@@ -1,6 +1,6 @@
 let firstLoadWidget = 1;
 let widgetOpen = 0;
-let crate; // Add this variable
+let crate;
 
 document.addEventListener("DOMContentLoaded", () => {
     let button = document.createElement("button");
@@ -25,15 +25,5 @@ function loadCrate() {
         server: '1426041062094536757',
         channel: '1426042531929391104', 
         color: "#8B0000"
-        // Removed the glyph line - this was causing it to open Discord
     });
-    crate.toggle(true);
-    
-    // Optional: remove the default button if you want
-    setTimeout(() => {
-        let element = document.querySelector('[aria-label="Discord chat embed"]');
-        if(element) {
-            element.remove();
-        }
-    }, 100);
 }
