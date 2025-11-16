@@ -51,5 +51,6 @@ app.get('/backgrounds', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Selenite is running on port ${port}`);
+  console.log(`GX-GamesCrack V2 is running on port ${port}`);
 });
+
