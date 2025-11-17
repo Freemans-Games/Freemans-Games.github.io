@@ -1,6 +1,6 @@
 {
-    "name": "Selenite",
-    "short_name": "Selenite",
+    "name": "GX-GamesCrack V2",
+    "short_name": "GX-GamesCrack",
     "start_url": "index.html",
     "scope": "./",
     "icons": [
@@ -19,3 +19,4 @@
     "background_color": "#10002b",
     "display": "standalone"
   }
+
