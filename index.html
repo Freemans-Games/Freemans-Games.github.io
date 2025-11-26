@@ -4,398 +4,275 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Gladiator Games</title>
-
 <style>
-    :root{
-      --deep-purple:#311433;
-      --dark-purple:#1a0f29;
-      --muted-purple:#2b1a3f;
-      --gold:#D4AF37;
-      --gold-2:#F0C94A;
-      --text:#F8F5F2;
-      --muted:#BFB3B0;
-      --card:#24142b;
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%}
-    body{
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(180deg,var(--deep-purple) 0%, #2f1b3a 100%);
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      line-height:1.35;
-    }
+:root{
+  --deep-purple:#311433;
+  --dark-purple:#1a0f29;
+  --muted-purple:#2b1a3f;
+  --gold:#D4AF37;
+  --gold-2:#F0C94A;
+  --text:#F8F5F2;
+  --muted:#BFB3B0;
+  --card:#24142b;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background:linear-gradient(180deg,var(--deep-purple) 0%, #2f1b3a 100%);
+  color:var(--text);
+  line-height:1.35;
+}
+/* Header */
+header{
+  position:sticky;top:0;z-index:100;
+  background:linear-gradient(135deg,var(--muted-purple),var(--dark-purple));
+  border-bottom:3px solid var(--gold);
+  box-shadow:0 6px 18px rgba(212,175,55,0.18);
+}
+nav{
+  max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:16px;
+}
+.logo{display:flex;align-items:center;gap:12px;cursor:pointer}
+.logo .icon{
+  width:44px;height:44px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(180deg,#3b2350,#25112a);
+  font-size:20px;box-shadow:0 6px 18px rgba(0,0,0,0.4);
+  border:2px solid rgba(212,175,55,0.12);
+}
+.logo span{font-weight:700;letter-spacing:0.6px;color:var(--text);text-shadow:0 0 10px rgba(212,175,55,0.14)}
+.nav-links{list-style:none;display:flex;gap:18px}
+.nav-links a{
+  color:var(--text);text-decoration:none;padding:6px 8px;border-radius:6px;position:relative;font-weight:600;font-size:15px;
+  transition:all .18s;
+}
+.nav-links a.active, .nav-links a:hover{
+  color:var(--dark-purple);background:var(--gold);box-shadow:0 6px 18px rgba(212,175,55,0.12);
+}
 
-    /* Header / Nav */
-    header{
-      position:sticky;top:0;z-index:100;
-      background:linear-gradient(135deg,var(--muted-purple),var(--dark-purple));
-      border-bottom:3px solid var(--gold);
-      box-shadow:0 6px 18px rgba(212,175,55,0.18);
-    }
-    nav{
-      max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:16px;
-    }
-    .logo{display:flex;align-items:center;gap:12px;cursor:pointer}
-    .logo .icon{
-      width:44px;height:44px;border-radius:8px;
-      display:flex;align-items:center;justify-content:center;
-      background:linear-gradient(180deg,#3b2350,#25112a);
-      font-size:20px;box-shadow:0 6px 18px rgba(0,0,0,0.4);
-      border:2px solid rgba(212,175,55,0.12);
-    }
-    .logo span{font-weight:700;letter-spacing:0.6px;color:var(--text);text-shadow:0 0 10px rgba(212,175,55,0.14)}
-    .nav-links{list-style:none;display:flex;gap:18px}
-    .nav-links a{
-      color:var(--text);text-decoration:none;padding:6px 8px;border-radius:6px;position:relative;font-weight:600;font-size:15px;
-      transition:all .18s;
-    }
-    .nav-links a.active, .nav-links a:hover{
-      color:var(--dark-purple);background:var(--gold);box-shadow:0 6px 18px rgba(212,175,55,0.12);
-    }
+main{max-width:1200px;margin:22px auto;padding:18px}
+.hero{
+  background:linear-gradient(180deg,var(--card),#1b0e22);border-radius:14px;padding:44px 22px;margin-bottom:28px;border:3px solid var(--gold);
+  box-shadow:0 14px 40px rgba(21,7,22,0.6);
+  position:relative;overflow:hidden;
+}
+.hero::before{content:"⚔️";position:absolute;font-size:160px;opacity:0.04;left:50%;top:50%;transform:translate(-50%,-50%)}
+.hero h1{font-size:42px;margin-bottom:10px;text-shadow:0 0 10px rgba(212,175,55,0.2)}
+.hero p{color:var(--muted);margin-bottom:20px}
 
-    main{max-width:1200px;margin:22px auto;padding:18px}
-    .hero{
-      background:linear-gradient(180deg,var(--card),#1b0e22);border-radius:14px;padding:44px 22px;margin-bottom:28px;border:3px solid var(--gold);
-      box-shadow:0 14px 40px rgba(21,7,22,0.6);
-      position:relative;overflow:hidden;
-    }
-    .hero::before{content:"⚔️";position:absolute;font-size:160px;opacity:0.04;left:50%;top:50%;transform:translate(-50%,-50%)}
-    .hero h1{font-size:42px;margin-bottom:10px;text-shadow:0 0 10px rgba(212,175,55,0.2)}
-    .hero p{color:var(--muted);margin-bottom:20px}
+.search-container{display:flex;gap:10px;max-width:760px;margin:0 auto}
+.search-box{
+  flex:1;padding:14px 16px;border-radius:26px;border:2px solid rgba(212,175,55,0.18);
+  background:transparent;color:var(--text);font-size:15px;
+}
+.search-box:focus{outline:none;box-shadow:0 6px 22px rgba(212,175,55,0.12)}
+.search-btn{padding:12px 20px;border-radius:26px;border:0;background:var(--gold);color:var(--dark-purple);font-weight:700;cursor:pointer}
+.search-btn:hover{background:var(--gold-2)}
 
-    .search-container{display:flex;gap:10px;max-width:760px;margin:0 auto}
-    .search-box{
-      flex:1;padding:14px 16px;border-radius:26px;border:2px solid rgba(212,175,55,0.18);
-      background:transparent;color:var(--text);font-size:15px;
-    }
-    .search-box:focus{outline:none;box-shadow:0 6px 22px rgba(212,175,55,0.12)}
-    .search-btn{padding:12px 20px;border-radius:26px;border:0;background:var(--gold);color:var(--dark-purple);font-weight:700;cursor:pointer}
-    .search-btn:hover{background:var(--gold-2)}
+.games-section h2{margin-bottom:14px}
+.games-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+.game-box{
+  background:linear-gradient(180deg,#231024,#1b0f22);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
+  transition:all .22s;cursor:pointer;position:relative;overflow:hidden;
+}
+.game-box:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(0,0,0,0.6);border-color:rgba(212,175,55,0.22)}
+.game-icon{width:100px;height:100px;margin:0 auto 12px;border-radius:10px;background-size:cover;background-position:center;box-shadow:0 10px 30px rgba(0,0,0,0.6)}
+.game-box h3{font-size:18px;margin-bottom:6px;text-align:center}
+.game-box p{color:var(--muted);text-align:center;margin-bottom:12px}
+.play-button{width:100%;padding:10px;border-radius:24px;border:0;background:var(--gold);color:var(--dark-purple);font-weight:800;cursor:pointer}
+.play-button:hover{background:var(--gold-2);transform:scale(1.03)}
 
-    /* Stats */
-    .stats{display:flex;gap:16px;justify-content:space-between;margin:26px 0;padding:22px;border-radius:12px;background:linear-gradient(180deg,var(--muted-purple),var(--card));border:3px solid var(--gold)}
-    .stat-box{flex:1;text-align:center}
-    .stat-number{font-size:36px;font-weight:800;color:var(--text);text-shadow:0 0 12px rgba(212,175,55,0.18)}
-    .stat-label{color:var(--muted);margin-top:6px}
+footer{margin-top:34px;padding:28px;text-align:center;border-top:3px solid var(--gold);background:linear-gradient(180deg,#16061a,#120414);color:var(--muted)}
 
-    /* Grid */
-    .games-section h2{margin-bottom:14px}
-    .games-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
-    .game-box{
-      background:linear-gradient(180deg,#231024,#1b0f22);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.03);
-      transition:all .22s;cursor:pointer;position:relative;overflow:hidden;
-    }
-    .game-box:hover{transform:translateY(-8px);box-shadow:0 18px 40px rgba(0,0,0,0.6);border-color:rgba(212,175,55,0.22)}
-    .game-icon{width:100px;height:100px;margin:0 auto 12px;border-radius:10px;background-size:cover;background-position:center;box-shadow:0 10px 30px rgba(0,0,0,0.6)}
-    .game-box h3{font-size:18px;margin-bottom:6px;text-align:center}
-    .game-box p{color:var(--muted);text-align:center;margin-bottom:12px}
-
-    .play-button{width:100%;padding:10px;border-radius:24px;border:0;background:var(--gold);color:var(--dark-purple);font-weight:800;cursor:pointer}
-    .play-button:hover{background:var(--gold-2);transform:scale(1.03)}
-
-    /* footer */
-    footer{margin-top:34px;padding:28px;text-align:center;border-top:3px solid var(--gold);background:linear-gradient(180deg,#16061a,#120414);color:var(--muted)}
-
-    /* Game frame overlay */
-    .game-frame-container{
-      position:fixed;inset:0;background:rgba(0,0,0,0.92);display:none;flex-direction:column;z-index:1200;
-    }
-    .game-frame-container.active{display:flex}
-    .game-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:linear-gradient(180deg,var(--muted-purple),var(--dark-purple));border-bottom:3px solid var(--gold)}
-    .game-title{display:flex;align-items:center;gap:12px;font-weight:700}
-    .game-title .mini{width:42px;height:42px;border-radius:8px;background:linear-gradient(180deg,#3b2350,#25112a);display:flex;align-items:center;justify-content:center;font-size:18px}
-    .close-btn{background:var(--gold);border:0;padding:10px 16px;border-radius:20px;font-weight:700;cursor:pointer}
-    .game-iframe{flex:1;width:100%;border:0;background:#000}
-
-    /* loading & fallback */
-    .loading{padding:28px;text-align:center;color:var(--muted)}
-    .notice{padding:18px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border:1px solid rgba(255,255,255,0.03);color:var(--muted);margin-bottom:14px}
-    .manual-add{display:flex;gap:8px;margin-top:8px}
-    .manual-add input{flex:1;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:var(--text)}
-    .manual-add button{padding:8px 12px;border-radius:8px;border:0;background:var(--gold);color:var(--dark-purple);cursor:pointer}
-
-    @media (max-width:720px){
-      .nav-links{display:none}
-      nav{padding:12px}
-      .hero h1{font-size:28px}
-      .search-container{flex-direction:column}
-      .stats{flex-direction:column;gap:12px}
-    }
+.game-frame-container{
+  position:fixed;inset:0;background:rgba(0,0,0,0.92);display:none;flex-direction:column;z-index:1200;
+}
+.game-frame-container.active{display:flex}
+.game-header{display:flex;align-items:center;justify-content:space-between;padding:14px 20px;background:linear-gradient(180deg,var(--muted-purple),var(--dark-purple));border-bottom:3px solid var(--gold)}
+.game-title{display:flex;align-items:center;gap:12px;font-weight:700}
+.game-title .mini{width:42px;height:42px;border-radius:8px;background:linear-gradient(180deg,#3b2350,#25112a);display:flex;align-items:center;justify-content:center;font-size:18px}
+.close-btn{background:var(--gold);border:0;padding:10px 16px;border-radius:20px;font-weight:700;cursor:pointer}
+.game-iframe{flex:1;width:100%;border:0;background:#000}
 </style>
 </head>
 <body>
-  <header>
-    <nav>
-      <div class="logo" onclick="navigateTo('home')">
-        <div class="icon">🛡️</div>
-        <span>GLADIATOR GAMES</span>
+<header>
+  <nav>
+    <div class="logo" onclick="navigateTo('home')">
+      <div class="icon">🛡️</div>
+      <span>GLADIATOR GAMES</span>
+    </div>
+    <ul class="nav-links">
+      <li><a onclick="navigateTo('home')" class="active" data-page="home">🏛️ Home</a></li>
+      <li><a onclick="navigateTo('games')" data-page="games">⚔️ Games</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <!-- Home -->
+  <div id="home" class="page active">
+    <section class="hero">
+      <h1>⚔️ Gladiator Games ⚔️</h1>
+      <p>Battle in quick, free browser games — sharpen your skill and rise to the arena!</p>
+
+      <div class="search-container">
+        <input id="homeSearch" class="search-box" placeholder="Search for games..." />
+        <button class="search-btn" onclick="searchGames('homeSearch')">🔍 Search</button>
       </div>
+    </section>
 
-      <ul class="nav-links">
-        <li><a onclick="navigateTo('home')" class="active" data-page="home">🏛️ Home</a></li>
-        <li><a onclick="navigateTo('games')" data-page="games">⚔️ Games</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <main>
-    <!-- Home -->
-    <div id="home" class="page active">
-      <section class="hero">
-        <h1>⚔️ Gladiator Games ⚔️</h1>
-        <p>Battle in quick, free browser games — sharpen your skill and rise to the arena!</p>
-
-        <div class="search-container">
-          <input id="homeSearch" class="search-box" placeholder="Search for games..." />
-          <button class="search-btn" onclick="searchGames('homeSearch')">🔍 Search</button>
-        </div>
-      </section>
-
-      <div class="stats" aria-hidden="false">
-        <div class="stat-box">
-          <div class="stat-number" id="totalGames">0</div>
-          <div class="stat-label">Total Games</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-number" id="popularGames">0</div>
-          <div class="stat-label">Popular Games</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-number" id="newGames">0</div>
-          <div class="stat-label">New This Week</div>
-        </div>
+    <section class="games-section">
+      <h2>🏛️ Featured Games</h2>
+      <div class="games-container" id="featuredGames">
+        <div class="loading">Loading games...</div>
       </div>
-
-      <section class="games-section">
-        <h2>🏛️ Featured Games</h2>
-        <div class="games-container" id="featuredGames">
-          <div class="loading">Loading games...</div>
-        </div>
-      </section>
-    </div>
-
-    <!-- All Games -->
-    <div id="games" class="page" style="display:none">
-      <section class="filter-section">
-        <h2>⚔️ All Games</h2>
-
-        <div style="max-width:100%;margin-bottom:16px;">
-          <input id="gamesSearch" class="search-box" placeholder="Search games..." oninput="filterGames()" />
-        </div>
-      </section>
-
-      <section class="games-section">
-        <div class="games-container" id="allGames">
-          <div class="loading">Loading games...</div>
-        </div>
-
-        <div id="noGamesNotice" class="notice" style="display:none;">
-          No games found. You can either:
-          <ul style="margin:8px 0 0 18px;">
-            <li>Add a <code>games.json</code> (array of objects with <code>name</code>, <code>directory</code>, and <code>image</code>) next to this page.</li>
-            <li>Or manually add a game below (this updates the current view only).</li>
-          </ul>
-
-          <div class="manual-add" style="margin-top:10px;">
-            <input id="manualName" placeholder="Game name (e.g. Gladiator One)" />
-            <input id="manualDir" placeholder="Directory name (e.g. gladiator-one)" />
-            <input id="manualImage" placeholder="Image filename (e.g. game.png)" />
-            <button onclick="manualAdd()">Add</button>
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <!-- Popular -->
-    <div id="popular" class="page" style="display:none">
-      <section class="games-section">
-        <h2>🔥 Most Popular</h2>
-        <p style="color:var(--muted);margin-bottom:16px">These are the arena favorites.</p>
-        <div class="games-container" id="popularGamesContainer">
-          <div class="loading">Loading popular games...</div>
-        </div>
-      </section>
-    </div>
-
-    <!-- New -->
-    <div id="new" class="page" style="display:none">
-      <section class="games-section">
-        <h2>✨ New Entries</h2>
-        <p style="color:var(--muted);margin-bottom:16px">Fresh to the sands this week.</p>
-        <div class="games-container" id="newGamesContainer">
-          <div class="loading">Loading new games...</div>
-        </div>
-      </section>
-    </div>
-  </main>
-
-  <footer>
-    <div>⚔️ Gladiator Games ⚔️</div>
-    <div style="margin-top:8px;color:var(--muted)">All Games Stolen From GX-GamesCrack V2</div>
-  </footer>
-
-  <!-- Game Frame -->
-  <div class="game-frame-container" id="gameFrame" aria-hidden="true">
-    <div class="game-header">
-      <div class="game-title">
-        <div class="mini">🛡️</div>
-        <div id="currentGameTitle">Game Title</div>
-      </div>
-      <button class="close-btn" onclick="closeGame()">✕ Close</button>
-    </div>
-    <iframe class="game-iframe" id="gameIframe" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+    </section>
   </div>
 
-<script>
-  let gamesDatabase = [];
-  let allGamesData = [];
-
-  function safeText(str){ return String(str).replace(/[<>]/g,''); }
-
-  function imageStyleFor(game){
-    if(game.image){
-      const url = `semag/${encodeURIComponent(game.slug)}/${encodeURIComponent(game.image)}`;
-      return `background-image: url('${url}'); background-size: cover; background-position: center;`;
-    } else {
-      return `background: linear-gradient(135deg,#33203b,#1a0f29); display:flex; align-items:center; justify-content:center; font-size:28px;`;
-    }
-  }
-
-  async function loadGamesFromJSON(){
-    ['featuredGames','allGames','popularGamesContainer','newGamesContainer'].forEach(id=>{
-      document.getElementById(id).innerHTML = '<div class="loading">Loading games...</div>';
-    });
-    document.getElementById('noGamesNotice').style.display = 'none';
-
-    try{
-      const res = await fetch('data/games.json');
-      if(!res.ok) throw new Error('data/games.json not found');
-      const games = await res.json();
-      if(!Array.isArray(games) || games.length === 0) throw new Error('data/games.json empty');
-
-      gamesDatabase = games.map((g, idx) => ({
-        name: g.name || (`Game ${idx+1}`),
-        slug: g.directory || g.slug || (`game-${idx+1}`),
-        category: g.category || '', // unused
-        description: g.description || (`Play ${g.name || 'this game'} online!`),
-        image: g.image || '',
-        isPopular: !!g.isPopular,
-        isNew: !!g.isNew,
-        plays: Number.isFinite(g.plays) ? g.plays : Math.floor(Math.random()*15000)+1000
-      }));
-
-      allGamesData = [...gamesDatabase];
-      loadFeaturedGames();
-      updateStats();
-    } catch(err){
-      console.warn('Failed to load data/games.json:', err);
-      gamesDatabase = [];
-      allGamesData = [];
-      showNoGames();
-    }
-  }
-
-  function showNoGames(){
-    ['featuredGames','allGames','popularGamesContainer','newGamesContainer'].forEach(id=>{
-      document.getElementById(id).innerHTML = '<div class="loading">No games found.</div>';
-    });
-    document.getElementById('noGamesNotice').style.display = 'block';
-    updateStats();
-  }
-
-  function createGameCard(game){
-    const safeName = safeText(game.name);
-    const imgStyle = imageStyleFor(game);
-    return `
-      <div class="game-box" onclick="playGame('${encodeURIComponent(game.slug)}','${safeName}')">
-        <div class="game-icon" style="${imgStyle}" aria-hidden="true">${game.image ? '' : '?'}</div>
-        <h3>${safeName}</h3>
-        <p>${game.description}</p>
-        <button class="play-button" onclick="event.stopPropagation(); playGame('${encodeURIComponent(game.slug)}','${safeName}')">▶ Play Now</button>
+  <!-- All Games -->
+  <div id="games" class="page" style="display:none">
+    <section class="games-section">
+      <h2>⚔️ All Games</h2>
+      <div style="max-width:100%;margin-bottom:16px;">
+        <input id="gamesSearch" class="search-box" placeholder="Search games..." oninput="filterGames()" />
       </div>
-    `;
+      <div class="games-container" id="allGames">
+        <div class="loading">Loading games...</div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div>⚔️ Gladiator Games ⚔️</div>
+  <div style="margin-top:8px;color:var(--muted)">All Games Stolen From GX-GamesCrack V2</div>
+</footer>
+
+<!-- Game Frame -->
+<div class="game-frame-container" id="gameFrame" aria-hidden="true">
+  <div class="game-header">
+    <div class="game-title">
+      <div class="mini">🛡️</div>
+      <div id="currentGameTitle">Game Title</div>
+    </div>
+    <button class="close-btn" onclick="closeGame()">✕ Close</button>
+  </div>
+  <iframe class="game-iframe" id="gameIframe" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
+</div>
+
+<script>
+let gamesDatabase = [];
+let allGamesData = [];
+
+function safeText(str){ return String(str).replace(/[<>]/g,''); }
+
+function imageStyleFor(game){
+  if(game.image){
+    const url = `semag/${encodeURIComponent(game.slug)}/${encodeURIComponent(game.image)}`;
+    return `background-image: url('${url}'); background-size: cover; background-position: center;`;
+  } else {
+    return `background: linear-gradient(135deg,#3c1840,#1a0f29); display:flex; align-items:center; justify-content:center; font-size:28px;`;
   }
+}
 
-  function loadFeaturedGames(){
-    const el = document.getElementById('featuredGames');
-    const featured = gamesDatabase.slice(0,6);
-    el.innerHTML = featured.length ? featured.map(createGameCard).join('') : '<div class="loading">No featured games.</div>';
-  }
+async function loadGamesFromJSON(){
+  document.getElementById('featuredGames').innerHTML = '<div class="loading">Loading games...</div>';
+  document.getElementById('allGames').innerHTML = '<div class="loading">Loading games...</div>';
 
-  function loadAllGames(){
-    const container = document.getElementById('allGames');
-    container.innerHTML = allGamesData.length ? allGamesData.map(createGameCard).join('') : '<div class="loading">No games found.</div>';
-  }
+  try{
+    const res = await fetch('data/games.json');
+    if(!res.ok) throw new Error('data/games.json not found');
+    const games = await res.json();
+    if(!Array.isArray(games) || !games.length) throw new Error('No games found');
 
-  function loadPopularGames(){
-    const popular = allGamesData.filter(g=>g.isPopular);
-    const container = document.getElementById('popularGamesContainer');
-    container.innerHTML = popular.length ? popular.map(createGameCard).join('') : '<div class="loading">No popular games.</div>';
-  }
+    gamesDatabase = games.map((g, idx) => ({
+      name: g.name || (`Game ${idx+1}`),
+      slug: g.directory || g.slug || (`game-${idx+1}`),
+      description: g.description || (`Play ${g.name} online!`),
+      image: g.image || ''
+    }));
 
-  function loadNewGames(){
-    const newGames = allGamesData.filter(g=>g.isNew);
-    const container = document.getElementById('newGamesContainer');
-    container.innerHTML = newGames.length ? newGames.map(createGameCard).join('') : '<div class="loading">No new games.</div>';
-  }
-
-  function updateStats(){
-    document.getElementById('totalGames').textContent = allGamesData.length;
-    document.getElementById('popularGames').textContent = allGamesData.filter(g=>g.isPopular).length;
-    document.getElementById('newGames').textContent = allGamesData.filter(g=>g.isNew).length;
-  }
-
-  function playGame(slug,title){
-    document.getElementById('gameFrame').classList.add('active');
-    document.getElementById('currentGameTitle').textContent = title;
-    document.getElementById('gameIframe').src = `semag/${slug}/game.html`;
-  }
-
-  function closeGame(){
-    document.getElementById('gameFrame').classList.remove('active');
-    document.getElementById('gameIframe').src = '';
-  }
-
-  function navigateTo(page){
-    document.querySelectorAll('.page').forEach(p=>p.style.display='none');
-    const el = document.getElementById(page);
-    if(el) el.style.display='block';
-
-    document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
-    const navLink = document.querySelector(`.nav-links a[data-page="${page}"]`);
-    if(navLink) navLink.classList.add('active');
-  }
-
-  function searchGames(inputId){
-    const query = document.getElementById(inputId).value.toLowerCase();
-    const filtered = allGamesData.filter(g=>g.name.toLowerCase().includes(query));
-    const container = document.getElementById(inputId==='homeSearch'?'featuredGames':'allGames');
-    container.innerHTML = filtered.length ? filtered.map(createGameCard).join('') : '<div class="loading">No games match your search.</div>';
-  }
-
-  function filterGames(){
-    const query = document.getElementById('gamesSearch').value.toLowerCase();
-    const filtered = allGamesData.filter(g=>g.name.toLowerCase().includes(query));
-    const container = document.getElementById('allGames');
-    container.innerHTML = filtered.length ? filtered.map(createGameCard).join('') : '<div class="loading">No games match your search.</div>';
-  }
-
-  function manualAdd(){
-    const name = document.getElementById('manualName').value.trim();
-    const dir = document.getElementById('manualDir').value.trim();
-    const img = document.getElementById('manualImage').value.trim();
-    if(!name || !dir) return alert('Name and directory are required!');
-    const newGame = {name, slug:dir, image:img, description:'Play this game online!'};
-    allGamesData.push(newGame);
-    loadAllGames();
+    allGamesData = [...gamesDatabase];
     loadFeaturedGames();
-    updateStats();
+    loadAllGames();
+  } catch(err){
+    console.warn(err);
+    document.getElementById('featuredGames').innerHTML = '<div class="loading">No games found.</div>';
+    document.getElementById('allGames').innerHTML = '<div class="loading">No games found.</div>';
   }
+}
 
-  window.addEventListener('DOMContentLoaded', loadGamesFromJSON);
+function createGameCard(game){
+  const safeName = safeText(game.name);
+  const imgStyle = imageStyleFor(game);
+  return `
+    <div class="game-box" onclick="playGame('${encodeURIComponent(game.slug)}','${safeName}')">
+      <div class="game-icon" style="${imgStyle}" aria-hidden="true">${game.image ? '' : safeName.charAt(0)}</div>
+      <h3>${safeName}</h3>
+      <p>Game</p>
+      <button class="play-button" onclick="event.stopPropagation(); playGame('${encodeURIComponent(game.slug)}','${safeName}')">▶ Play Now</button>
+    </div>
+  `;
+}
+
+function loadFeaturedGames(){
+  const featured = gamesDatabase.slice(0,6);
+  document.getElementById('featuredGames').innerHTML = featured.map(createGameCard).join('');
+}
+
+function loadAllGames(){
+  document.getElementById('allGames').innerHTML = allGamesData.map(createGameCard).join('');
+}
+
+function navigateTo(pageId){
+  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+  const page = document.getElementById(pageId);
+  if(page) page.style.display='block';
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  const activeLink = document.querySelector(`[data-page="${pageId}"]`);
+  if(activeLink) activeLink.classList.add('active');
+}
+
+function filterGames(){
+  const term = (document.getElementById('gamesSearch').value||'').toLowerCase().trim();
+  allGamesData = gamesDatabase.filter(game =>
+    game.name.toLowerCase().includes(term) ||
+    (game.description||'').toLowerCase().includes(term)
+  );
+  loadAllGames();
+}
+
+function searchGames(inputId){
+  const term = (document.getElementById(inputId).value||'').trim();
+  if(!term) return;
+  navigateTo('games');
+  document.getElementById('gamesSearch').value = term;
+  filterGames();
+}
+
+function playGame(slug, name){
+  const frame = document.getElementById('gameFrame');
+  const iframe = document.getElementById('gameIframe');
+  document.getElementById('currentGameTitle').textContent = safeText(name);
+  iframe.src = `semag/${decodeURIComponent(slug)}/index.html`;
+  frame.classList.add('active');
+  document.body.style.overflow='hidden';
+}
+
+function closeGame(){
+  const frame = document.getElementById('gameFrame');
+  const iframe = document.getElementById('gameIframe');
+  frame.classList.remove('active');
+  iframe.src='';
+  document.body.style.overflow='auto';
+}
+
+window.addEventListener('DOMContentLoaded', ()=>{
+  loadGamesFromJSON();
+  navigateTo('home');
+});
 </script>
-
 </body>
 </html>
