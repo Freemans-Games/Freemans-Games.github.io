@@ -95,12 +95,6 @@
     .play-button{width:100%;padding:10px;border-radius:24px;border:0;background:var(--gold);color:var(--dark-purple);font-weight:800;cursor:pointer}
     .play-button:hover{background:var(--gold-2);transform:scale(1.03)}
 
-    /* Filters */
-    .filter-section{margin-bottom:18px}
-    .filters{display:flex;gap:10px;flex-wrap:wrap}
-    .filter-btn{padding:8px 18px;border-radius:22px;border:2px solid rgba(255,255,255,0.03);background:transparent;color:var(--text);cursor:pointer}
-    .filter-btn.active{background:var(--gold);color:var(--dark-purple);border-color:var(--gold)}
-
     /* footer */
     footer{margin-top:34px;padding:28px;text-align:center;border-top:3px solid var(--gold);background:linear-gradient(180deg,#16061a,#120414);color:var(--muted)}
 
@@ -141,7 +135,7 @@
 
       <ul class="nav-links">
         <li><a onclick="navigateTo('home')" class="active" data-page="home">🏛️ Home</a></li>
-        <li><a onclick="navigateTo('games')" data-page="games">⚔️ Games</a></li>>
+        <li><a onclick="navigateTo('games')" data-page="games">⚔️ Games</a></li>
       </ul>
     </nav>
   </header>
@@ -189,10 +183,6 @@
 
         <div style="max-width:100%;margin-bottom:16px;">
           <input id="gamesSearch" class="search-box" placeholder="Search games..." oninput="filterGames()" />
-        </div>
-
-        <div class="filters">
-          <button class="filter-btn active" onclick="filterByCategory('all', this)">All</button>
         </div>
       </section>
 
@@ -259,62 +249,37 @@
   </div>
 
 <script>
-  // ---- Data & State ----
   let gamesDatabase = [];
-  let currentCategory = 'all';
   let allGamesData = [];
 
-  // ---- Utilities ----
-  function setYear(){ document.getElementById('year').textContent = new Date().getFullYear(); }
   function safeText(str){ return String(str).replace(/[<>]/g,''); }
-  function guessCategory(name){
-    const n = (name||'').toLowerCase();
-    if(!n) return 'action';
-    if(n.includes('race')||n.includes('run')||n.includes('chariot')) return 'racing';
-    if(n.includes('arena')||n.includes('gladi')) return 'arena';
-    if(n.includes('strategy')||n.includes('tactic')) return 'strategy';
-    return 'action';
-  }
 
-  // Return image URL (if provided) or fallback gradient style.
   function imageStyleFor(game){
     if(game.image){
-      // Use provided image (relative path under semag/<dir>/<image>)
       const url = `semag/${encodeURIComponent(game.slug)}/${encodeURIComponent(game.image)}`;
       return `background-image: url('${url}'); background-size: cover; background-position: center;`;
     } else {
-      const colors = {
-        arena: 'linear-gradient(135deg,#5b1d4a,#2b0840)',
-        action:'linear-gradient(135deg,#3c1840,#1a0f29)',
-        racing:'linear-gradient(135deg,#45223f,#23112a)',
-        strategy:'linear-gradient(135deg,#3b2240,#25112a)',
-        default:'linear-gradient(135deg,#33203b,#1a0f29)'
-      };
-      const bg = colors[game.category] || colors.default;
-      return `background: ${bg}; display:flex; align-items:center; justify-content:center; font-size:28px;`;
+      return `background: linear-gradient(135deg,#33203b,#1a0f29); display:flex; align-items:center; justify-content:center; font-size:28px;`;
     }
   }
 
-  // ---- Load games (tries games.json; no demo fallback) ----
   async function loadGamesFromJSON(){
-    // clear placeholders
-    document.getElementById('featuredGames').innerHTML = '<div class="loading">Loading games...</div>';
-    document.getElementById('allGames').innerHTML = '<div class="loading">Loading games...</div>';
-    document.getElementById('popularGamesContainer').innerHTML = '<div class="loading">Loading popular games...</div>';
-    document.getElementById('newGamesContainer').innerHTML = '<div class="loading">Loading new games...</div>';
+    ['featuredGames','allGames','popularGamesContainer','newGamesContainer'].forEach(id=>{
+      document.getElementById(id).innerHTML = '<div class="loading">Loading games...</div>';
+    });
     document.getElementById('noGamesNotice').style.display = 'none';
 
     try{
       const res = await fetch('data/games.json');
-      if(!res.ok) throw new Error('games.json not found or blocked');
+      if(!res.ok) throw new Error('data/games.json not found');
       const games = await res.json();
-      if(!Array.isArray(games) || games.length === 0) throw new Error('games.json empty');
+      if(!Array.isArray(games) || games.length === 0) throw new Error('data/games.json empty');
 
       gamesDatabase = games.map((g, idx) => ({
         name: g.name || (`Game ${idx+1}`),
         slug: g.directory || g.slug || (`game-${idx+1}`),
-        category: (g.category || guessCategory(g.name)).toLowerCase(),
-        description: g.description || (`Play ${g.name} online!`),
+        category: g.category || '', // unused
+        description: g.description || (`Play ${g.name || 'this game'} online!`),
         image: g.image || '',
         isPopular: !!g.isPopular,
         isNew: !!g.isNew,
@@ -325,8 +290,7 @@
       loadFeaturedGames();
       updateStats();
     } catch(err){
-      console.warn('Failed to load games.json:', err);
-      // Show "no games" UI (no demo games)
+      console.warn('Failed to load data/games.json:', err);
       gamesDatabase = [];
       allGamesData = [];
       showNoGames();
@@ -334,173 +298,104 @@
   }
 
   function showNoGames(){
-    document.getElementById('featuredGames').innerHTML = '<div class="loading">No games found.</div>';
-    document.getElementById('allGames').innerHTML = '<div class="loading">No games found.</div>';
-    document.getElementById('popularGamesContainer').innerHTML = '<div class="loading">No games found.</div>';
-    document.getElementById('newGamesContainer').innerHTML = '<div class="loading">No games found.</div>';
+    ['featuredGames','allGames','popularGamesContainer','newGamesContainer'].forEach(id=>{
+      document.getElementById(id).innerHTML = '<div class="loading">No games found.</div>';
+    });
     document.getElementById('noGamesNotice').style.display = 'block';
     updateStats();
   }
 
-  // ---- Rendering ----
   function createGameCard(game){
     const safeName = safeText(game.name);
     const imgStyle = imageStyleFor(game);
-    const displayCategory = (game.category||'Action').charAt(0).toUpperCase() + (game.category||'action').slice(1);
     return `
       <div class="game-box" onclick="playGame('${encodeURIComponent(game.slug)}','${safeName}')">
-        <div class="game-icon" style="${imgStyle}" aria-hidden="true">${game.image ? '' : displayCategory.charAt(0)}</div>
+        <div class="game-icon" style="${imgStyle}" aria-hidden="true">${game.image ? '' : '?'}</div>
         <h3>${safeName}</h3>
-        <p>${displayCategory}</p>
+        <p>${game.description}</p>
         <button class="play-button" onclick="event.stopPropagation(); playGame('${encodeURIComponent(game.slug)}','${safeName}')">▶ Play Now</button>
       </div>
     `;
   }
 
   function loadFeaturedGames(){
-    const featured = gamesDatabase.slice(0,6);
     const el = document.getElementById('featuredGames');
-    if(!featured.length){ el.innerHTML = '<div class="loading">No featured games.</div>'; return;}
-    el.innerHTML = featured.map(createGameCard).join('');
+    const featured = gamesDatabase.slice(0,6);
+    el.innerHTML = featured.length ? featured.map(createGameCard).join('') : '<div class="loading">No featured games.</div>';
   }
 
   function loadAllGames(){
     const container = document.getElementById('allGames');
-    const filtered = currentCategory === 'all' ? allGamesData : allGamesData.filter(g=>g.category===currentCategory);
-    if(!filtered.length){ container.innerHTML = '<div class="loading">No games match your filters.</div>'; return; }
-    container.innerHTML = filtered.map(createGameCard).join('');
+    container.innerHTML = allGamesData.length ? allGamesData.map(createGameCard).join('') : '<div class="loading">No games found.</div>';
   }
 
   function loadPopularGames(){
-    const popular = gamesDatabase.filter(g=>g.isPopular).sort((a,b)=>b.plays-a.plays);
+    const popular = allGamesData.filter(g=>g.isPopular);
     const container = document.getElementById('popularGamesContainer');
-    if(!popular.length){ container.innerHTML = '<div class="loading">No popular games yet.</div>'; return;}
-    container.innerHTML = popular.map(createGameCard).join('');
+    container.innerHTML = popular.length ? popular.map(createGameCard).join('') : '<div class="loading">No popular games.</div>';
   }
 
   function loadNewGames(){
-    const newest = gamesDatabase.filter(g=>g.isNew);
+    const newGames = allGamesData.filter(g=>g.isNew);
     const container = document.getElementById('newGamesContainer');
-    if(!newest.length){ container.innerHTML = '<div class="loading">No new games this week.</div>'; return;}
-    container.innerHTML = newest.map(createGameCard).join('');
-  }
-
-  // ---- Interaction / Navigation ----
-  function navigateTo(pageId){
-    document.querySelectorAll('.page').forEach(p=>p.style.display='none');
-    const page = document.getElementById(pageId);
-    if(page) page.style.display = 'block';
-
-    document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
-    const activeLink = document.querySelector(`[data-page="${pageId}"]`);
-    if(activeLink) activeLink.classList.add('active');
-
-    if(pageId==='home') loadFeaturedGames();
-    if(pageId==='games') loadAllGames();
-    if(pageId==='popular') loadPopularGames();
-    if(pageId==='new') loadNewGames();
-  }
-
-  function filterByCategory(category, btn){
-    currentCategory = category;
-    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-    if(btn) btn.classList.add('active');
-    loadAllGames();
-    navigateTo('games');
-  }
-
-  function filterGames(){
-    const term = (document.getElementById('gamesSearch').value||'').toLowerCase().trim();
-    allGamesData = gamesDatabase.filter(game => {
-      return game.name.toLowerCase().includes(term) ||
-             (game.description||'').toLowerCase().includes(term) ||
-             (game.category||'').toLowerCase().includes(term);
-    });
-    loadAllGames();
-  }
-
-  function searchGames(inputId){
-    const term = (document.getElementById(inputId).value||'').trim();
-    if(!term) return;
-    navigateTo('games');
-    document.getElementById('gamesSearch').value = term;
-    filterGames();
+    container.innerHTML = newGames.length ? newGames.map(createGameCard).join('') : '<div class="loading">No new games.</div>';
   }
 
   function updateStats(){
-    document.getElementById('totalGames').textContent = gamesDatabase.length;
-    document.getElementById('popularGames').textContent = gamesDatabase.filter(g=>g.isPopular).length;
-    document.getElementById('newGames').textContent = gamesDatabase.filter(g=>g.isNew).length;
+    document.getElementById('totalGames').textContent = allGamesData.length;
+    document.getElementById('popularGames').textContent = allGamesData.filter(g=>g.isPopular).length;
+    document.getElementById('newGames').textContent = allGamesData.filter(g=>g.isNew).length;
   }
 
-  // ---- Play / Close Game ----
-  function playGame(slug, name){
-    const gameFrame = document.getElementById('gameFrame');
-    const iframe = document.getElementById('gameIframe');
-    const title = document.getElementById('currentGameTitle');
-    title.textContent = safeText(name);
-    iframe.src = `semag/${decodeURIComponent(slug)}/index.html`;
-    gameFrame.classList.add('active');
-    document.body.style.overflow = 'hidden';
+  function playGame(slug,title){
+    document.getElementById('gameFrame').classList.add('active');
+    document.getElementById('currentGameTitle').textContent = title;
+    document.getElementById('gameIframe').src = `semag/${slug}/game.html`;
   }
 
   function closeGame(){
-    const gameFrame = document.getElementById('gameFrame');
-    const iframe = document.getElementById('gameIframe');
-    gameFrame.classList.remove('active');
-    iframe.src = '';
-    document.body.style.overflow = 'auto';
+    document.getElementById('gameFrame').classList.remove('active');
+    document.getElementById('gameIframe').src = '';
   }
 
-  // ---- Manual add (updates current view only) ----
+  function navigateTo(page){
+    document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+    const el = document.getElementById(page);
+    if(el) el.style.display='block';
+
+    document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+    const navLink = document.querySelector(`.nav-links a[data-page="${page}"]`);
+    if(navLink) navLink.classList.add('active');
+  }
+
+  function searchGames(inputId){
+    const query = document.getElementById(inputId).value.toLowerCase();
+    const filtered = allGamesData.filter(g=>g.name.toLowerCase().includes(query));
+    const container = document.getElementById(inputId==='homeSearch'?'featuredGames':'allGames');
+    container.innerHTML = filtered.length ? filtered.map(createGameCard).join('') : '<div class="loading">No games match your search.</div>';
+  }
+
+  function filterGames(){
+    const query = document.getElementById('gamesSearch').value.toLowerCase();
+    const filtered = allGamesData.filter(g=>g.name.toLowerCase().includes(query));
+    const container = document.getElementById('allGames');
+    container.innerHTML = filtered.length ? filtered.map(createGameCard).join('') : '<div class="loading">No games match your search.</div>';
+  }
+
   function manualAdd(){
     const name = document.getElementById('manualName').value.trim();
     const dir = document.getElementById('manualDir').value.trim();
     const img = document.getElementById('manualImage').value.trim();
-    if(!name || !dir) return alert('Please provide name and directory.');
-    const entry = { name, slug: dir, category: 'action', image: img, isPopular:false, isNew:false, plays:0, description: '' };
-    gamesDatabase.push(entry);
-    allGamesData = [...gamesDatabase];
-    loadFeaturedGames();
+    if(!name || !dir) return alert('Name and directory are required!');
+    const newGame = {name, slug:dir, image:img, description:'Play this game online!'};
+    allGamesData.push(newGame);
     loadAllGames();
+    loadFeaturedGames();
     updateStats();
-    document.getElementById('manualName').value = '';
-    document.getElementById('manualDir').value = '';
-    document.getElementById('manualImage').value = '';
-    document.getElementById('noGamesNotice').style.display = 'none';
   }
 
-  // ---- Keyboard support ----
-  document.addEventListener('keydown', (e) => {
-    const active = document.activeElement;
-    const isTyping = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.isContentEditable);
-    if(e.key === '/' && !isTyping){
-      const frame = document.getElementById('gameFrame');
-      if(frame.classList.contains('active')) {
-        closeGame();
-        e.preventDefault();
-        return;
-      }
-      try{ history.back(); }catch(err){}
-      e.preventDefault();
-    }
-
-    if(e.key === 'Escape'){
-      const frame = document.getElementById('gameFrame');
-      if(frame.classList.contains('active')) closeGame();
-    }
-  });
-
-  document.addEventListener('submit', (ev)=>{ ev.preventDefault(); });
-
-  // ---- Init ----
-  window.addEventListener('DOMContentLoaded', ()=>{
-    setYear();
-    loadGamesFromJSON();
-    navigateTo('home');
-    window.ggReload = () => { loadGamesFromJSON(); updateStats(); loadFeaturedGames(); };
-  });
+  window.addEventListener('DOMContentLoaded', loadGamesFromJSON);
 </script>
+
 </body>
 </html>
-
