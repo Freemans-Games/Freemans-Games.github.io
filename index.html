@@ -305,7 +305,7 @@
     document.getElementById('noGamesNotice').style.display = 'none';
 
     try{
-      const res = await fetch('games.json');
+      const res = await fetch('data/games.json');
       if(!res.ok) throw new Error('games.json not found or blocked');
       const games = await res.json();
       if(!Array.isArray(games) || games.length === 0) throw new Error('games.json empty');
@@ -503,3 +503,4 @@
 </script>
 </body>
 </html>
+
